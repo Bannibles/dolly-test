@@ -1,0 +1,9 @@
+header: X-DEMO-AUTH
+guest: guest
+keys:
+  2AB1EDA05BD056FC57AC8C0219A10EF219D24F2BA33786CD20CF47D326277FD5:
+    name: Authenticated User
+    role: demo-client
+  BFF31263E821A953DFBDDEED1F2C1EBDB4035B997F01C361B5A688A733C25061:
+    name: Denis Issoupov
+    role: demo-admin

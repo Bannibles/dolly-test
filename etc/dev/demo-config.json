@@ -1,0 +1,116 @@
+{
+    "defaults" : {
+      "ServiceName"       : "dolly-demo",
+      "Datacenter"        : "dev",
+      "Environment"       : "test",
+      "HTTP" : {
+        "ServiceName"     : "health",
+        "BindAddr"        : ":8080",
+        "PackageLogger"   : "github.com/go-phorce/dolly-test/health",
+        "AllowProfiling"  : false,
+        "HeartbeatSecs"   : 0,
+        "Services"        : ["status"]
+      },
+      "HTTPS" : {
+        "ServiceName"     : "webapi",
+        "ServerTLS" : {
+          "CertFile"      : "certs/test_dolly_server.pem",
+          "KeyFile"       : "certs/test_dolly_server-key.pem",
+          "TrustedCAFile" : "certs/rootca/test_dolly_root_CA.pem",
+          "ClientCertAuth": "VerifyClientCertIfGiven"
+        },
+        "BindAddr"        : ":8443",
+        "AllowProfiling"  : false,
+        "HeartbeatSecs"   : 60,
+        "Services"        : ["status", "teams"]
+      },
+      "Authz" : {
+        "AllowAny" : [
+          "/v1/status"
+        ],
+        "AllowAnyRole" : [
+        ],
+        "Allow" : [
+          "/v1/teams:demo-admin,demo-peer"
+        ],
+        "LogAllowed"      : true,
+        "LogDenied"       : true,
+        "APIKeyMapper"    : "roles-apikey.dev.yaml",
+        "CertMapper"      : "roles-cert.dev.yaml",
+        "JWTMapper"       : ""
+      },
+      "LogLevels" : [
+        {
+          "Repo"          : "*",
+          "Level"         : "TRACE"
+        },
+        {
+          "Repo"          : "log",
+          "Level"         : "ERROR"
+        },
+        {
+          "Repo"          : "github.com/go-phorce/dolly-test",
+          "Package"       : "*",
+          "Level"         : "DEBUG"
+        },
+        {
+          "Repo"          : "github.com/go-phorce/dolly",
+          "Package"       : "*",
+          "Level"         : "DEBUG"
+        },
+        {
+          "Repo"          : "github.com/go-phorce/dolly/xhttp",
+          "Package"       : "*",
+          "Level"         : "TRACE"
+        },
+        {
+          "Repo"          : "github.com/go-phorce/dolly/xpki",
+          "Package"       : "*",
+          "Level"         : "DEBUG"
+        },
+        {
+          "Repo"          : "github.com/certcentral/dolly/health",
+          "Package"       : "xhttp",
+          "Level"         : "ERROR"
+        }
+      ],
+      "Logger" : {
+        "Directory"       : "",
+        "MaxAgeDays"      : 3,
+        "MaxSizeMb"       : 10
+      },
+      "Audit" : {
+        "Directory"       : "/tmp/dolly/audit",
+        "MaxAgeDays"      : 7,
+        "MaxSizeMb"       : 10
+      },
+      "CryptoProv" : {
+        "Default"         : "softhsm_dev.json"
+      },
+      "DataProtection" : {
+        "KeyFile"       : "certs/test_dolly_encrypt-key.pem"
+      },
+      "Metrics" : {
+        "Provider"        : "inmemory"
+      },
+    "hosts" : {
+      "LOCAL_DEMO"     : "LOCAL_DEMO",
+      "centy"           : "datadog"
+    },
+    "overrides" : {
+      "datadog" : {
+        "Metrics" : {
+          "Provider"        : "datadog"
+        }
+      },
+      "LOCAL_DEMO" : {
+        "HTTP" : {
+          "BindAddr"        : ":8080"
+        },
+        "HTTPS" : {
+          "BindAddr"        : ":8443"
+        }
+      }
+    }
+  }
+}
