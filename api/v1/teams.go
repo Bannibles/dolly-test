@@ -18,6 +18,7 @@ type User struct {
 	ID          string     `json:"id"`
 	Name        string     `json:"name"`
 	Email       string     `json:"email"`
+	Age         int        `json:"age"`
 	LoginCount  int        `json:"login_count"`
 	LastLoginAt *time.Time `json:"last_login_at,omitempty"`
 }
@@ -36,6 +37,7 @@ type TeamMembership struct {
 	Team   string `json:"team"`
 	UserID string `json:"user_id"`
 	Role   string `json:"role"`
+	Age    int    `json:"age"`
 }
 
 // TeamMemberInfo provides team membership information for a user
@@ -47,9 +49,27 @@ type TeamMemberInfo struct {
 	Role         string `json:"role"`
 	Name         string `json:"name"`
 	Email        string `json:"email"`
+	Age          int    `json:"age"`
 }
 
 // GetTeamMembershipsResponse returns teams membership
 type GetTeamMembershipsResponse struct {
 	Memberships []*TeamMemberInfo `json:"memberships"`
+}
+
+// ListTeamsResponse returns list of available teams
+type ListTeamsResponse struct {
+	Teams []string `json:"teams"`
+}
+
+// FindUserRequest specifies user search request
+type FindUserRequest struct {
+	Name   string `json:"name"`
+	MinAge int    `json:"min_age"`
+	MaxAge int    `json:"max_age"`
+}
+
+// FindUserResponse returns list of users that match the search criteria
+type FindUserResponse struct {
+	Users []*User `json:"users"`
 }

@@ -30,6 +30,7 @@
           "/v1/status"
         ],
         "AllowAnyRole" : [
+          "/v1/users"
         ],
         "Allow" : [
           "/v1/teams:dolly-admin,dolly-peer"

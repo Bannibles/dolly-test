@@ -2,8 +2,10 @@ package teams
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/go-phorce/dolly-test/api/v1"
+	"github.com/go-phorce/dolly-test/datahub"
 	"github.com/go-phorce/dolly/rest"
 	"github.com/go-phorce/dolly/xhttp/httperror"
 	"github.com/go-phorce/dolly/xhttp/identity"
@@ -19,8 +21,7 @@ var logger = xlog.NewPackageLogger("github.com/go-phorce/dolly-test/service", "t
 // Service defines the Data service
 type Service struct {
 	server rest.Server
-	// TODO: store in real DB
-	// db     db.Provider
+	db     datahub.UsersManager
 }
 
 // Factory returns a factory of the service
@@ -29,10 +30,10 @@ func Factory(server rest.Server) interface{} {
 		logger.Panic("teams.Factory: invalid parameter")
 	}
 
-	return func( /* TODO: db db.Provider*/ ) {
+	return func(db datahub.UsersManager) {
 		svc := &Service{
 			server: server,
-			// db:     db,
+			db:     db,
 		}
 
 		server.AddService(svc)
@@ -55,7 +56,55 @@ func (s *Service) Close() {
 
 // Register adds the service status endpoints to the overall URL router
 func (s *Service) Register(r rest.Router) {
-	r.GET(v1.URIForTeamsMemberships, teamsMembershipHandler(s))
+	r.GET(v1.URIForTeams, listTeamsHandler(s))
+	r.GET(v1.URIForUsers, listUsersHandler(s))
+}
+
+func listTeamsHandler(s *Service) rest.Handle {
+	return func(w http.ResponseWriter, r *http.Request, p rest.Params) {
+		ctx := identity.ForRequest(r)
+		_ = ctx.Identity()
+
+		res, err := s.db.ListTeams(r.Context())
+		if err != nil {
+			marshal.WriteJSON(w, r, httperror.WithUnexpected("failed to list team").WithCause(err))
+			return
+		}
+
+		marshal.WritePlainJSON(w, http.StatusOK, res, marshal.PrettyPrint)
+	}
+}
+
+func listUsersHandler(s *Service) rest.Handle {
+	return func(w http.ResponseWriter, r *http.Request, _ rest.Params) {
+		ctx := identity.ForRequest(r)
+		_ = ctx.Identity()
+
+		params := r.URL.Query()
+		minAge := params.Get("min_age")
+		maxAge := params.Get("max_age")
+
+		req := &v1.FindUserRequest{
+			Name: params.Get("name"),
+		}
+
+		if minAge != "" {
+			i, _ := strconv.Atoi(minAge)
+			req.MinAge = i
+		}
+		if maxAge != "" {
+			i, _ := strconv.Atoi(maxAge)
+			req.MaxAge = i
+		}
+
+		res, err := s.db.FindUser(r.Context(), req)
+		if err != nil {
+			marshal.WriteJSON(w, r, httperror.WithUnexpected("failed to list team").WithCause(err))
+			return
+		}
+
+		marshal.WritePlainJSON(w, http.StatusOK, res, marshal.PrettyPrint)
+	}
 }
 
 func teamsMembershipHandler(s *Service) rest.Handle {

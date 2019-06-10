@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"github.com/go-phorce/dolly-test/config"
+	"github.com/go-phorce/dolly-test/datahub"
+	"github.com/go-phorce/dolly-test/datahub/inmemory"
 	"github.com/go-phorce/dolly-test/pkg/roles"
 	"github.com/go-phorce/dolly-test/service/teams"
 	"github.com/go-phorce/dolly-test/version"
@@ -258,6 +260,18 @@ func (a *app) start() error {
 		}
 
 		return cry, nil
+	})
+	if err != nil {
+		return errors.Trace(err)
+	}
+
+	err = a.container.Provide(func(cfg *config.Configuration) (datahub.Datahub, datahub.UsersManager, error) {
+		db, err := inmemory.NewUsersManager()
+		if err != nil {
+			return nil, nil, errors.Trace(err)
+		}
+
+		return db, db, nil
 	})
 	if err != nil {
 		return errors.Trace(err)
