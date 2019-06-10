@@ -1,0 +1,12 @@
+valid_organizations:
+- "Dolly"
+- "dolly.com"
+valid_issuers:
+- "C=US, L=CA, O=Dolly, OU=dev, CN=[TEST] Dolly Root CA"
+roles:
+  enrollme-client:
+  - "C=US, L=CA, O=Dolly, OU=dev, CN=dolly-client"
+  enrollme-peer:
+  - "C=US, L=CA, O=Dolly, OU=dev, CN=dolly-peer"
+  enrollme-admin:
+  - "C=US, L=CA, O=Dolly, OU=dev, CN=dolly-admin"

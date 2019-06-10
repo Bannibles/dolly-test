@@ -4,12 +4,13 @@
       "Datacenter"        : "dev",
       "Environment"       : "test",
       "HTTP" : {
+        "Disabled"        : true,
         "ServiceName"     : "health",
         "BindAddr"        : ":8080",
         "PackageLogger"   : "github.com/go-phorce/dolly-test/health",
         "AllowProfiling"  : false,
         "HeartbeatSecs"   : 0,
-        "Services"        : ["status"]
+        "Services"        : []
       },
       "HTTPS" : {
         "ServiceName"     : "webapi",
@@ -22,7 +23,7 @@
         "BindAddr"        : ":8443",
         "AllowProfiling"  : false,
         "HeartbeatSecs"   : 60,
-        "Services"        : ["status", "teams"]
+        "Services"        : ["teams"]
       },
       "Authz" : {
         "AllowAny" : [
@@ -31,11 +32,11 @@
         "AllowAnyRole" : [
         ],
         "Allow" : [
-          "/v1/teams:demo-admin,demo-peer"
+          "/v1/teams:dolly-admin,dolly-peer"
         ],
         "LogAllowed"      : true,
         "LogDenied"       : true,
-        "APIKeyMapper"    : "roles-apikey.dev.yaml",
+        "APIKeyMapper"    : "",
         "CertMapper"      : "roles-cert.dev.yaml",
         "JWTMapper"       : ""
       },

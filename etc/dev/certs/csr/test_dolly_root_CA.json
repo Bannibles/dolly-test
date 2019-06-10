@@ -1,0 +1,19 @@
+{
+    "CN": "[TEST] Dolly Root CA",
+    "key": {
+        "algo": "rsa",
+        "size": 4096
+    },
+    "names": [
+        {
+            "C": "US",
+            "L": "CA",
+            "O": "Dolly",
+            "OU": "dev"
+        }
+    ],
+    "ca": {
+        "pathlen": 2,
+        "expiry": "8760h"
+    }
+}

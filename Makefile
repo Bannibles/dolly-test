@@ -6,7 +6,7 @@ include .project/go-project.mk
 #
 TARGET_ENV ?= dev
 
-CERTS_PREFIX=test_${PROJ_NAME}_
+CERTS_PREFIX=test_dolly_
 
 .PHONY: *
 
@@ -61,9 +61,9 @@ hsmconfig:
 	.project/config-softhsm.sh --pin-file ~/softhsm2/pin_unittest.txt --generate-pin -s dolly_unittest -o $(PROJ_ROOT)/etc/dev/softhsm_unittest.json --delete --list-slots --list-object
 
 gen_test_certs:
-	echo "*** Running gen_test_certs"
-	.project/gen_test_certs.sh --hsm-cfg $(PROJ_ROOT)/etc/dev/softhsm_dev.json --ca-config $(PROJ_ROOT)/etc/dev/ca-config.dev.json --out-dir $(PROJ_ROOT) --prefix $(CERTS_PREFIX) --root-ca --ca --server --client --peers --admin --encrypt
-	.project/gen_test_certs.sh --hsm-cfg $(PROJ_ROOT)/etc/dev/softhsm_unittest.json --ca-config $(PROJ_ROOT)/etc/dev/ca-config.dev.json --out-dir $(PROJ_ROOT) --prefix test_untrusted_ --root-ca --ca --admin
+	echo "*** Running gen_test_certs in $(PROJ_ROOT) with $(CERTS_PREFIX)"
+	.project/gen_test_certs.sh --hsm-cfg "$(PROJ_ROOT)/etc/dev/softhsm_dev.json" --ca-config "$(PROJ_ROOT)/etc/dev/ca-config.dev.json" --out-dir "$(PROJ_ROOT)" --prefix "$(CERTS_PREFIX)" --root-ca --ca --server --client --admin
+	.project/gen_test_certs.sh --hsm-cfg "$(PROJ_ROOT)/etc/dev/softhsm_unittest.json" --ca-config "$(PROJ_ROOT)/etc/dev/ca-config.dev.json" --out-dir "$(PROJ_ROOT)" --prefix test_untrusted_ --root-ca --ca --admin
 
 run:
 	dolly_DIR=. goreman -basedir $(PROJ_DIR) -f $(PROJ_DIR)/Procfile start

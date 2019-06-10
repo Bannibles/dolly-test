@@ -1,0 +1,19 @@
+{
+    "CN": "[TEST] Dolly Issuing CA 1",
+    "key": {
+        "algo": "rsa",
+        "size": 4096
+    },
+    "names": [
+        {
+            "C": "US",
+            "L": "CA",
+            "O": "Dolly",
+            "OU": "dev"
+        }
+    ],
+    "ca": {
+        "pathlen": 1,
+        "expiry": "8760h"
+    }
+}
