@@ -92,7 +92,7 @@ func New(cfg *Config) *Provider {
 
 	for key, id := range cfg.KeysMap {
 		key = strings.ToUpper(key)
-		p.keysMap[key] = identity.NewIdentity(id.Role, id.Name)
+		p.keysMap[key] = identity.NewIdentity(id.Role, id.Name, "")
 	}
 
 	return p

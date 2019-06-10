@@ -250,7 +250,7 @@ func (p *Provider) IdentityMapper(r *http.Request) (identity.Identity, error) {
 
 		role := p.userRole(claims.UserInfo.Email)
 
-		return identity.NewIdentityWithUserInfo(role, claims.UserInfo.Email, claims.UserInfo), nil
+		return identity.NewIdentityWithUserInfo(role, claims.UserInfo.Email, "", claims.UserInfo), nil
 	}
 
 	return nil, errors.Errorf("invalid token")

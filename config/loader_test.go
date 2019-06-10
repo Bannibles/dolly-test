@@ -36,7 +36,6 @@ func Test_ConfigFilesAreJson(t *testing.T) {
 		assert.NoError(t, json.NewDecoder(f).Decode(&v), "JSON parser error for file %v", file)
 	}
 	isJSON("etc/dev/" + ConfigFileName)
-	isJSON("etc/prod/" + ConfigFileName)
 }
 
 func Test_LoadConfig(t *testing.T) {
@@ -55,34 +54,6 @@ func Test_LoadConfig(t *testing.T) {
 			assert.True(t, filepath.IsAbs(dir), "dir %q should be an absoluite path", name)
 		}
 	}
-	testDirAbs("DataDir", c.Etcd.DataDir)
 	testDirAbs("HTTPS.ServerTLS.CertFile", c.HTTPS.ServerTLS.CertFile)
 	testDirAbs("HTTPS.ServerTLS.KeyFile", c.HTTPS.ServerTLS.KeyFile)
-}
-
-func Test_LocalIP(t *testing.T) {
-	cfg := &Etcd{
-		Name:           "local1",
-		InitialCluster: "local1=https://enrollme:2380",
-		ListenPeerURLs: []string{"https://enrollme:2380"},
-		AdvertPeerURLs: []string{"https://enrollme:2380"},
-	}
-
-	lp, err := cfg.ParseListenPeerURLs()
-	require.NoError(t, err, "Failed to get Listen Peers URLs")
-	assert.Equal(t, 1, len(lp))
-	assert.Equal(t, "enrollme:2380", lp[0].Host)
-
-	// with localhost
-	cfg = &Etcd{
-		Name:           "local1",
-		InitialCluster: "local1=https://enrollme:2380",
-		ListenPeerURLs: []string{"https://localhost:2380"},
-		AdvertPeerURLs: []string{"https://localhost:2380"},
-	}
-
-	lp, err = cfg.ParseListenPeerURLs()
-	require.NoError(t, err, "Failed to get Listen Peers URLs")
-	assert.Equal(t, 1, len(lp))
-	assert.Equal(t, "localhost:2380", lp[0].Host)
 }

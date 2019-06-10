@@ -155,5 +155,5 @@ func subjectToIdentity(role, subject string) identity.Identity {
 		}
 	}
 
-	return identity.NewIdentity(role, name)
+	return identity.NewIdentity(role, name, "")
 }
