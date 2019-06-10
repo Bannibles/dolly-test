@@ -4,9 +4,9 @@ valid_organizations:
 valid_issuers:
 - "C=US, L=CA, O=Dolly, OU=dev, CN=[TEST] Dolly Root CA"
 roles:
-  enrollme-client:
+  dolly-client:
   - "C=US, L=CA, O=Dolly, OU=dev, CN=dolly-client"
-  enrollme-peer:
+  dolly-peer:
   - "C=US, L=CA, O=Dolly, OU=dev, CN=dolly-peer"
-  enrollme-admin:
-  - "C=US, L=CA, O=Dolly, OU=dev, CN=dolly-admin"
+  dolly-admin:
+  - "C=US, L=CA, O=dolly, OU=dev, CN=dolly-admin"

@@ -12,12 +12,14 @@ import (
 	"time"
 
 	"github.com/go-phorce/dolly-test/config"
+	"github.com/go-phorce/dolly-test/pkg/roles"
 	"github.com/go-phorce/dolly-test/service/teams"
 	"github.com/go-phorce/dolly-test/version"
 	"github.com/go-phorce/dolly/netutil"
 	"github.com/go-phorce/dolly/rest"
 	"github.com/go-phorce/dolly/rest/tlsconfig"
 	"github.com/go-phorce/dolly/xhttp/authz"
+	"github.com/go-phorce/dolly/xhttp/identity"
 	"github.com/go-phorce/dolly/xlog"
 	"github.com/go-phorce/dolly/xlog/logrotate"
 	"github.com/go-phorce/dolly/xpki/cryptoprov"
@@ -60,6 +62,8 @@ type appFlags struct {
 	isStderr          *bool
 	bindHTTP          *string
 	bindHTTPS         *string
+	certRolesFile     *string
+	jwtRolesFile      *string
 	apikeyRolesFile   *string
 	httpsCertFile     *string
 	httpsKeyFile      *string
@@ -127,7 +131,7 @@ func (a *app) Close() error {
 func (a *app) loadConfig() error {
 	app := kp.New("dolly-test", "Demo Web Server to use Dolly")
 	app.HelpFlag.Short('h')
-	verInfo := fmt.Sprintf("enrollme %v", version.Current())
+	verInfo := fmt.Sprintf("dolly %v", version.Current())
 	app.Version(verInfo)
 
 	flags := a.flags
@@ -138,6 +142,8 @@ func (a *app) loadConfig() error {
 	flags.bindHTTP = app.Flag("bind-http", "Bind address for Public HTTP end-point").String()
 	flags.bindHTTPS = app.Flag("bind-https", "Bind address for Public WebAPI end-point").String()
 	flags.apikeyRolesFile = app.Flag("roles-apikey-file", "Location of the config file for API-Key role mapper").String()
+	flags.certRolesFile = app.Flag("roles-cert-file", "Location of the config file for certificate role mapper").String()
+	flags.jwtRolesFile = app.Flag("roles-oauth-file", "Location of the config file for OAuth2 role mapper").String()
 	flags.httpsCertFile = app.Flag("https-cert-file", "Path to the server TLS cert file.").String()
 	flags.httpsKeyFile = app.Flag("https-key-file", "Path to the server TLS key file.").String()
 	flags.httpsCAFile = app.Flag("https-trusted-ca-file", "Path to the server TLS trusted CA file.").String()
@@ -171,10 +177,15 @@ func (a *app) loadConfig() error {
 	if *flags.bindHTTPS != "" {
 		cfg.HTTPS.BindAddr = *flags.bindHTTPS
 	}
+	if *flags.certRolesFile != "" {
+		cfg.Authz.CertMapper = *flags.certRolesFile
+	}
+	if *flags.jwtRolesFile != "" {
+		cfg.Authz.JWTMapper = *flags.jwtRolesFile
+	}
 	if *flags.apikeyRolesFile != "" {
 		cfg.Authz.APIKeyMapper = *flags.apikeyRolesFile
 	}
-
 	a.container.Provide(func() (*config.Configuration, *appFlags) {
 		return a.cfg, a.flags
 	})
@@ -267,6 +278,16 @@ func (a *app) start() error {
 			if err != nil {
 				return nil, errors.Trace(err)
 			}
+
+			p, err := roles.New(
+				cfg.Authz.JWTMapper,
+				cfg.Authz.APIKeyMapper,
+				cfg.Authz.CertMapper,
+			)
+			if err != nil {
+				return nil, errors.Trace(err)
+			}
+			identity.SetGlobalIdentityMapper(p.IdentityMapper)
 		}
 		return azp, nil
 	})

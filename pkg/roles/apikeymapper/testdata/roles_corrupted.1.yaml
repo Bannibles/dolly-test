@@ -1,0 +1,9 @@
+v1
+-header: X-DC-AUTH
+-keys:
+  1:
+    name: foo
+    rle: guest
+  2:
+    name: bar
+    rol: client

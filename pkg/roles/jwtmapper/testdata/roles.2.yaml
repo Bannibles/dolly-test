@@ -1,0 +1,13 @@
+issuer: "enrollme2"
+audience: "enrollme2"
+kid: "1"
+keys:
+- id: "0"
+  seed: "PEu61GjFZqbAYcwY"
+- id: "1"
+  seed: "ipBuOU96QCDHPads"
+default_role: enrollme-user
+roles:
+  enrollme-admin:
+  - denis@ekspand.com
+  - admin@certcentral.com

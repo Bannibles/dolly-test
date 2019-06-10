@@ -1,0 +1,14 @@
+valid_organizations:
+- "Digicert"
+- "Digicert.com"
+valid_issuers:
+- "CN=[TEST] Digicert Enrollme Root CA"
+roles:
+  enrollme-client:
+  - "C=US, ST=wa, L=Kirkland, O=Digicert, CN=enrollme1.ekspand.com"
+  - "C=US, ST=wa, L=Kirkland, O=Digicert, CN=enrollme2.ekspand.com"
+  - "C=US, ST=wa, L=Kirkland, O=Digicert, CN=enrollme3.ekspand.com"
+  enrollme-peer:
+  - "C=US, ST=wa, L=Kirkland, O=Digicert, CN=peers.enrollme1.ekspand.com"
+  - "C=US, ST=wa, L=Kirkland, O=Digicert, CN=peers.enrollme2.ekspand.com"
+  - "C=US, ST=wa, L=Kirkland, O=Digicert, CN=peers.enrollme3.ekspand.com"

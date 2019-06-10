@@ -1,0 +1,9 @@
+roles:
+  enrollme-client:
+  "C=US, ST=wa, L=Kirkland, O=Ekspand, CN=enrollme1.ekspand.com"
+  "C=US, ST=wa, L=Kirkland, O=Ekspand, CN=enrollme2.ekspand.com"
+  "C=US, ST=wa, L=Kirkland, O=Ekspand, CN=enrollme3.ekspand.com"
+  enrollme-peer:
+  "C=US, ST=wa, L=Kirkland, O=Ekspand, CN=peers.enrollme1.ekspand.com"
+  "C=US, ST=wa, L=Kirkland, O=Ekspand, CN=peers.enrollme2.ekspand.com"
+  "C=US, ST=wa, L=Kirkland, O=Ekspand, CN=peers.enrollme3.ekspand.com"

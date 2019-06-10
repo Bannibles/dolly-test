@@ -114,7 +114,7 @@ if [[ "$SERVER" == "YES" && ! -f ${OUT_DIR}/etc/dev/certs/${PREFIX}server-key.pe
         -profile=server \
         -ca ${OUT_DIR}/etc/dev/certs/${PREFIX}issuer_CA.pem \
         -ca-key ${OUT_DIR}/etc/dev/certs/${PREFIX}issuer_CA-key.pem \
-        -hostname=localhost,127.0.0.1,10.77.77.100,10.77.77.101,10.77.77.102,10.88.88.100,10.88.88.101,10.88.88.102,*.enrollme.in,${HOSTNAME} \
+        -hostname=localhost,127.0.0.1,10.77.77.100,10.77.77.101,10.77.77.102,10.88.88.100,10.88.88.101,10.88.88.102,*.dolly.in,${HOSTNAME} \
         ${OUT_DIR}/etc/dev/certs/csr/${PREFIX}server.json | cfssljson -bare ${OUT_DIR}/etc/dev/certs/${PREFIX}server
         cat ${OUT_DIR}/etc/dev/certs/${PREFIX}issuer_CA.pem >> ${OUT_DIR}/etc/dev/certs/${PREFIX}server.pem
 fi
@@ -151,7 +151,7 @@ if [[ "$PEERS" == "YES" && ! -f ${OUT_DIR}/etc/dev/certs/${PREFIX}peers-key.pem 
         -profile=peers \
         -ca ${OUT_DIR}/etc/dev/certs/${PREFIX}issuer_CA.pem \
         -ca-key ${OUT_DIR}/etc/dev/certs/${PREFIX}issuer_CA-key.pem \
-        -hostname=localhost,127.0.0.1,10.77.77.100,10.77.77.101,10.77.77.102,10.88.88.100,10.88.88.101,10.88.88.102,*.enrollme.in,${HOSTNAME} \
+        -hostname=localhost,127.0.0.1,10.77.77.100,10.77.77.101,10.77.77.102,10.88.88.100,10.88.88.101,10.88.88.102,*.dolly.in,${HOSTNAME} \
         ${OUT_DIR}/etc/dev/certs/csr/${PREFIX}peers.json | cfssljson -bare ${OUT_DIR}/etc/dev/certs/${PREFIX}peers
         cat ${OUT_DIR}/etc/dev/certs/${PREFIX}issuer_CA.pem >> ${OUT_DIR}/etc/dev/certs/${PREFIX}peers.pem
 fi
