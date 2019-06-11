@@ -17,9 +17,9 @@ func NewUsersManager() (datahub.UsersManager, error) {
 	p := &inmem{
 		teams: []string{"admins", "users"},
 		users: []v1.User{
-			v1.User{"a001", "denis", "denis@ekspand.com", 33, 0, nil},
-			v1.User{"a002", "andrew", "andrew@ekspand.com", 43, 0, nil},
-			v1.User{"a003", "hayk", "hayk@ekspand.com", 27, 0, nil},
+			{ID: "a001", Name: "denis", Email: "denis@ekspand.com", Age: 33},
+			{ID: "a002", Name: "andrew", Email: "andrew@ekspand.com", Age: 43},
+			{ID: "a003", Name: "hayk", Email: "hayk@ekspand.com", Age: 27},
 		},
 	}
 	return p, nil
