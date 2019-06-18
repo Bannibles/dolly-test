@@ -20,6 +20,7 @@ func NewUsersManager() (datahub.UsersManager, error) {
 			{ID: "a001", Name: "denis", Email: "denis@ekspand.com", Age: 33},
 			{ID: "a002", Name: "andrew", Email: "andrew@ekspand.com", Age: 43},
 			{ID: "a003", Name: "hayk", Email: "hayk@ekspand.com", Age: 27},
+			{ID: "a004", Name: "daniel", Email: "daniel@ekspand.com", Age: 14},
 		},
 	}
 	return p, nil
